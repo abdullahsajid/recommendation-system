@@ -11,10 +11,10 @@ from flask_cors import cross_origin
 import json
 
 app = Flask(__name__)
-CORS(app)
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+CORS(app,origins=["http://localhost:3000"])
+app.config['MYSQL_HOST'] = 'tlhdb.mysql.database.azure.com'
+app.config['MYSQL_USER'] = 'tlh'
+app.config['MYSQL_PASSWORD'] = 'Manblock@123'
 app.config['MYSQL_DB'] = 'candidate'
 mysql = MySQL(app)
 ps = PorterStemmer()
@@ -24,42 +24,6 @@ ps = PorterStemmer()
 # @app.route('/getdata')
 @app.route('/recommend',methods=['GET'])
 @cross_origin()
-# def getdata():
-#     cur = mysql.connect.cursor(MySQLdb.cursors.DictCursor)
-#     cur.execute("""SELECT JSON_ARRAYAGG(
-#                 JSON_OBJECT(
-#                     'id', cp.post_id,
-#                     'content', cp.content,
-#                     'createdAt', cp.createdAt,
-#                     'postImg', cp.url,
-#                     'userId', cp.userPost_id,
-#                     'comments', (SELECT JSON_ARRAYAGG(
-#                                     JSON_OBJECT(
-#                                         'id', c.comment_id,
-#                                         'comment', c.comment,
-#                                         'postId', c.IdPost,
-#                                         'userId', c.userComm_id,
-#                                         'createdAt', c.createdAt
-#                                     )
-#                                 )
-#                                 FROM comments c 
-#                                 WHERE c.IdPost = cp.post_id
-#                             ),
-#                     'likes', (SELECT JSON_ARRAYAGG(
-#                                 JSON_OBJECT(
-#                                     'id', candLike.id,
-#                                     'PostId', candLike.userPost_id,
-#                                     'userId', candLike.usercandId
-#                                 )    
-#                             )
-#                             FROM candidate_post_likes candLike
-#                             WHERE candLike.userPost_id = cp.post_id
-#                         )      
-#                 )
-#             )
-#             FROM candidatepost cp""")
-#     data = cur.fetchall()
-#     return jsonify(data)
 
 def home():
     skills = request.args.getlist('skills')
@@ -99,5 +63,42 @@ if __name__ == "__main__":
     # df_test = df_profile['bio'] + df_profile['experience'] + df_profile['about']
     # print("profile",df_test)
 
+
+# def getdata():
+#     cur = mysql.connect.cursor(MySQLdb.cursors.DictCursor)
+#     cur.execute("""SELECT JSON_ARRAYAGG(
+#                 JSON_OBJECT(
+#                     'id', cp.post_id,
+#                     'content', cp.content,
+#                     'createdAt', cp.createdAt,
+#                     'postImg', cp.url,
+#                     'userId', cp.userPost_id,
+#                     'comments', (SELECT JSON_ARRAYAGG(
+#                                     JSON_OBJECT(
+#                                         'id', c.comment_id,
+#                                         'comment', c.comment,
+#                                         'postId', c.IdPost,
+#                                         'userId', c.userComm_id,
+#                                         'createdAt', c.createdAt
+#                                     )
+#                                 )
+#                                 FROM comments c 
+#                                 WHERE c.IdPost = cp.post_id
+#                             ),
+#                     'likes', (SELECT JSON_ARRAYAGG(
+#                                 JSON_OBJECT(
+#                                     'id', candLike.id,
+#                                     'PostId', candLike.userPost_id,
+#                                     'userId', candLike.usercandId
+#                                 )    
+#                             )
+#                             FROM candidate_post_likes candLike
+#                             WHERE candLike.userPost_id = cp.post_id
+#                         )      
+#                 )
+#             )
+#             FROM candidatepost cp""")
+#     data = cur.fetchall()
+#     return jsonify(data)
 
 
